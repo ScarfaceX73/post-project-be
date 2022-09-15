@@ -38,10 +38,13 @@ module.exports.getPost = async (req, res, next) => {
             res.status(500).send('An error occurred', err);
         }
         else {
+            // res.render('postPage', { posts: posts });
             res.contentType('json');
             res.send(posts);
         }
 
     }).sort({ createdAt: 'desc' });
+
+    // });
 }
 
