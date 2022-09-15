@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema({
     user_id: {
         type: String,
     },
-    name: {
+    title: {
         type: String,
         required: true,
     },
@@ -14,12 +14,6 @@ const postSchema = new mongoose.Schema({
         maxLength: 255,
         required: true
     },
-    img: {
-        data: Buffer,
-        contentType: String
-    }
-}, {
-    timestamps: true
 });
 
 const Post = new mongoose.model('Posts', postSchema, 'posts');
