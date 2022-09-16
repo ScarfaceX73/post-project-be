@@ -1,26 +1,31 @@
-const postModel = require('../model/model');
 const { getUserId } = require("../utils/firebase");
-const fs = require('fs');
+const mongo = require("../connect");
 
-
-module.exports.createPost = async (req, res, next) => {
-    const postData = new postModel({ ...req.body.product });
+module.exports.createPost = async (req, res) => {
     try {
-        const createdResponse = await postData.save();
-        res.send(createdResponse)
+        const uId = await getUserId(req);
+        const postDocument = {
+            user_id: uId,
+            ...(req?.body ?? {}),
+        };
+        console.log(postDocument);
+        await mongo.selectedDb.collection("posts").insertOne(postDocument);
+        res.status(200).send({ message: "Post added" });
     } catch (err) {
-        console.error(err);
         res.status(500).send(err);
     }
-}
+};
 
 module.exports.getPost = async (req, res, next) => {
     try {
-        const post = await postModel.find();
-        res.send(post)
+        const uId = await getUserId(req);
+        const postData = await mongo.selectedDb
+            .collection("post")
+            .find({ user_id: { $eq: uId } })
+            .toArray();
+        res.send(postData);
     } catch (err) {
         console.error(err);
         res.status(500).send(err);
     }
-}
-
+};

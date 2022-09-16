@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("./connect");
+const mongo = require("./connect");
 const postRouter = require("./router/post");
 const dotenv = require("dotenv");
 const { verifyUser } = require("./utils/firebase");
@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 
-mongoose.connect();
+mongo.connect();
 
 app.use((req, res, next) => {
     console.log(req?.method);
